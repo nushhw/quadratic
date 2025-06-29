@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quadratic Equation Solver</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: "Inter", sans-serif;
+        }
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-r from-blue-500 to-purple-600 min-h-screen flex items-center justify-center p-4">
+
+    <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg space-y-6 transform transition-all duration-300 hover:scale-[1.01]">
+        <h1 class="text-3xl font-extrabold text-center text-gray-800 mb-6">
+            <span class="text-blue-600">XY</span> Quadratic Equation Solver
+        </h1>
+
+        <div class="space-y-4">
+            <div>
+                <label for="a-coeff" class="block text-sm font-medium text-gray-700 mb-1">
+                    Coefficient a:
+                </label>
+                <input type="number" id="a-coeff" placeholder="Enter value for a (e.g., 1)"
+                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+            </div>
+            <div>
+                <label for="b-coeff" class="block text-sm font-medium text-gray-700 mb-1">
+                    Coefficient b:
+                </label>
+                <input type="number" id="b-coeff" placeholder="Enter value for b (e.g., -3)"
+                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+            </div>
+            <div>
+                <label for="c-coeff" class="block text-sm font-medium text-gray-700 mb-1">
+                    Coefficient c:
+                </label>
+                <input type="number" id="c-coeff" placeholder="Enter value for c (e.g., 2)"
+                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+            </div>
+        </div>
+
+        <button id="solve-button"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transform transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            Solve Quadratic Equation
+        </button>
+
+        <div id="results" class="space-y-4 text-gray-800 text-base">
+            <p id="discriminant-output" class="bg-gray-100 p-3 rounded-md hidden"></p>
+            <p id="roots-output" class="bg-gray-100 p-3 rounded-md hidden"></p>
+            <div id="vieta-output" class="bg-gray-100 p-3 rounded-md hidden space-y-2"></div>
+        </div>
+
+        <p class="text-center text-gray-600 text-sm mt-8">
+            ------ THANKS FOR USING THE XY QUADRATIC EQUATION SOLVER! ------
+        </p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const aI = document.getElementById('a-coeff');
+            const bI = document.getElementById('b-coeff');
+            const cI = document.getElementById('c-coeff');
+            const sB = document.getElementById('solve-button');
+
+            const dO = document.getElementById('discriminant-output');
+            const rO = document.getElementById('roots-output');
+            const vO = document.getElementById('vieta-output');
+
+            function cR() {
+                dO.innerHTML = '';
+                dO.classList.add('hidden');
+                rO.innerHTML = '';
+                rO.classList.add('hidden');
+                vO.innerHTML = '';
+                vO.classList.add('hidden');
+            }
+
+            function cD(x, y, z) {
+                const t = y * y - 4 * x * z;
+                let iV = false;
+                let msg = '';
+
+                if (t > 0) {
+                    msg = `There are 2 real roots since the discriminant b<sup>2</sup> - 4ac is ${t.toFixed(4)}.`;
+                    iV = true;
+                } else if (t < 0) {
+                    msg = `There are 2 imaginary roots since the discriminant b<sup>2</sup> - 4ac is ${t.toFixed(4)}.`;
+                } else {
+                    msg = `There is 1 real root since the discriminant b<sup>2</sup> - 4ac is ${t.toFixed(4)}.`;
+                    iV = true;
+                }
+                dO.innerHTML = msg;
+                dO.classList.remove('hidden');
+                return iV;
+            }
+
+            function cV(x, y, z, possible) {
+                if (possible) {
+                    let hC = '';
+                    const s = -1 * y / x;
+                    const m = z / x;
+
+                    hC += `<p>The roots of the equation multiply to ${m.toFixed(4)} and the sum is ${s.toFixed(4)}.</p>`;
+                    hC += `<p>x<sub>1</sub><sup>2</sup> + x<sub>2</sub><sup>2</sup> = ${(s * s - 2 * m).toFixed(4)}</p>`;
+
+                    let rsD;
+                    if (m !== 0) {
+                        const rs = s / m;
+                        rsD = `1/x<sub>1</sub> + 1/x<sub>2</sub> = ${rs.toFixed(4)}`;
+                        if (s <= 0 && m <= 0 && s !== 0 && m !== 0) {
+                            rsD += ` or ${Math.abs(s).toFixed(4)}/${Math.abs(m).toFixed(4)}`;
+                        }
+                    } else {
+                        rsD = `1/x<sub>1</sub> + 1/x<sub>2</sub> = Undefined (division by zero)`;
+                    }
+                    hC += `<p>${rsD}</p>`;
+
+                    const x3s = (s * s - 2 * m) * s - (m * s);
+                    hC += `<p>x<sub>1</sub><sup>3</sup> + x<sub>2</sub><sup>3</sup> = ${x3s.toFixed(4)}</p>`;
+
+                    const x4s = (x3s) * s - m * (s * s - 2 * m);
+                    hC += `<p>x<sub>1</sub><sup>4</sup> + x<sub>2</sub><sup>4</sup> = ${x4s.toFixed(4)}</p>`;
+
+                    vO.innerHTML = hC;
+                    vO.classList.remove('hidden');
+                }
+            }
+
+            function fS(x, y, z) {
+                const dis = y * y - 4 * x * z;
+                let msg = '';
+
+                if (dis >= 0) {
+                    const x1 = (-y + Math.sqrt(dis)) / (2 * x);
+                    const x2 = (-y - Math.sqrt(dis)) / (2 * x);
+
+                    if (x1.toFixed(4) !== x2.toFixed(4)) {
+                        msg = `The two real roots are x<sub>1</sub> = ${x1.toFixed(4)} and x<sub>2</sub> = ${x2.toFixed(4)}.`;
+                    } else {
+                        msg = `The real root is x<sub>1</sub> = ${x1.toFixed(4)}.`;
+                    }
+                    msg += `<br>Quadratic formula: ( ${-1 * y} &plusmn; &radic;${dis.toFixed(4)}) / ${2 * x}`;
+                } else {
+                    const rP = (-y / (2 * x)).toFixed(4);
+                    const iP = (Math.sqrt(Math.abs(dis)) / (2 * x)).toFixed(4);
+                    msg = `The two imaginary roots are x<sub>1</sub> = ${rP} + ${iP}i and x<sub>2</sub> = ${rP} - ${iP}i.`;
+                    msg += `<br>Quadratic formula: ( ${-1 * y} &plusmn; &radic;${dis.toFixed(4)}) / ${2 * x}`;
+                }
+                rO.innerHTML = msg;
+                rO.classList.remove('hidden');
+            }
+
+            sB.addEventListener('click', () => {
+                cR();
+
+                const a = parseFloat(aI.value);
+                const b = parseFloat(bI.value);
+                const c = parseFloat(cI.value);
+
+                if (isNaN(a) || isNaN(b) || isNaN(c)) {
+                    dO.innerHTML = `<span class="text-red-600 font-bold">Please enter valid numbers for all coefficients (a, b, c).</span>`;
+                    dO.classList.remove('hidden');
+                    return;
+                }
+
+                if (a === 0) {
+                    dO.innerHTML = `<span class="text-red-600 font-bold">Undefined. 'a' cannot be zero for a quadratic equation.</span>`;
+                    dO.classList.remove('hidden');
+                    return;
+                }
+
+                const hRR = cD(a, b, c);
+                fS(a, b, c);
+                cV(a, b, c, hRR);
+            });
+        });
+    </script>
+</body>
+</html>
