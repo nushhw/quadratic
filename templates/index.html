@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Quadratic Solver</title>
+</head>
+<body>
+    <h2>XY Quadratic Equation Solver</h2>
+    <form method="POST">
+        <label>a: <input type="number" step="any" name="a" required></label><br><br>
+        <label>b: <input type="number" step="any" name="b" required></label><br><br>
+        <label>c: <input type="number" step="any" name="c" required></label><br><br>
+        <input type="submit" value="Solve">
+    </form>
+
+    <div style="margin-top:20px;">
+        <p>{{ info|safe }}</p>
+        {% if plot_url %}
+            <img src="{{ plot_url }}" alt="Quadratic Graph" style="max-width:100%; height:auto;">
+        {% endif %}
+    </div>
+</body>
+</html>
