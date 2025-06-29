@@ -1,3 +1,6 @@
+/* dear gohjy/linteng. this is partially ai created. i made some parts myself, like the doctype html. */
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,6 +37,7 @@
                 <option value="quadratic">Quadratic Equation Solver</option>
                 <option value="cosine">Cosine Rule Calculator</option>
                 <option value="sine">Sine Rule Calculator</option>
+                <option value="inverse-trig">Inverse Trigonometric Functions</option>
             </select>
         </div>
 
@@ -266,6 +270,54 @@
             </div>
         </div>
 
+        <!-- Inverse Trigonometric Functions Section -->
+        <div id="inverse-trig-section" class="hidden">
+            <hr class="my-8 border-gray-300">
+            <h2 class="text-2xl font-extrabold text-center text-gray-800 mb-6">
+                Inverse Trigonometric Functions
+            </h2>
+
+            <div class="space-y-4">
+                <div>
+                    <label for="inverse-trig-value" class="block text-sm font-medium text-gray-700 mb-1">
+                        Value:
+                    </label>
+                    <input type="number" id="inverse-trig-value" placeholder="Enter a value"
+                           class="input-field">
+                    <p class="text-xs text-gray-500 mt-1">For sin<sup>-1</sup> and cos<sup>-1</sup>, value must be between -1 and 1.</p>
+                </div>
+                <div>
+                    <label for="inverse-trig-unit" class="block text-sm font-medium text-gray-700 mb-1">
+                        Output Unit:
+                    </label>
+                    <select id="inverse-trig-unit" class="input-field">
+                        <option value="degrees">Degrees</option>
+                        <option value="radians">Radians</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex flex-col space-y-4 mt-6">
+                <button id="calculate-asin"
+                        class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transform transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                    Calculate sin<sup>-1</sup>
+                </button>
+                <button id="calculate-acos"
+                        class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transform transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                    Calculate cos<sup>-1</sup>
+                </button>
+                <button id="calculate-atan"
+                        class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transform transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                    Calculate tan<sup>-1</sup>
+                </button>
+            </div>
+
+            <div id="inverse-trig-results" class="space-y-4 text-gray-800 text-base mt-6">
+                <p id="inverse-trig-output" class="bg-gray-100 p-3 rounded-md hidden"></p>
+            </div>
+        </div>
+
+
         <p class="text-center text-gray-600 text-sm mt-8">
             ------ THANKS FOR USING THE XY EQUATION SOLVER! ------
         </p>
@@ -278,6 +330,7 @@
             const quadraticSection = document.getElementById('quadratic-section');
             const cosineSection = document.getElementById('cosine-section');
             const sineSection = document.getElementById('sine-section');
+            const inverseTrigSection = document.getElementById('inverse-trig-section'); // New element
 
             // --- Quadratic Solver Elements ---
             const aI = document.getElementById('a-coeff');
@@ -333,6 +386,14 @@
             const cSiB = document.getElementById('calculate-sine-button');
             const sO = document.getElementById('sine-output');
 
+            // --- Inverse Trig Elements ---
+            const iTV = document.getElementById('inverse-trig-value');
+            const iTU = document.getElementById('inverse-trig-unit');
+            const cASIN = document.getElementById('calculate-asin');
+            const cACOS = document.getElementById('calculate-acos');
+            const cATAN = document.getElementById('calculate-atan');
+            const iTO = document.getElementById('inverse-trig-output');
+
 
             // --- Helper Functions ---
             function rT(v) {
@@ -354,6 +415,7 @@
                 quadraticSection.classList.add('hidden');
                 cosineSection.classList.add('hidden');
                 sineSection.classList.add('hidden');
+                inverseTrigSection.classList.add('hidden'); // Hide new section by default
 
                 if (selectedType === 'quadratic') {
                     quadraticSection.classList.remove('hidden');
@@ -363,6 +425,9 @@
                 } else if (selectedType === 'sine') {
                     sineSection.classList.remove('hidden');
                     updateSineInputs(); // Also update sine inputs when section becomes visible
+                } else if (selectedType === 'inverse-trig') { // New condition
+                    inverseTrigSection.classList.remove('hidden');
+                    clearInverseTrigResults(); // Clear results for inverse trig when shown
                 }
             }
 
@@ -704,6 +769,67 @@
 
                 sO.innerHTML = msg;
                 sO.classList.remove('hidden');
+            });
+
+            // --- Inverse Trigonometric Functions Logic ---
+            function clearInverseTrigResults() {
+                iTO.innerHTML = '';
+                iTO.classList.add('hidden');
+            }
+
+            cASIN.addEventListener('click', () => {
+                clearInverseTrigResults();
+                const value = parseFloat(iTV.value);
+                const unit = iTU.value;
+                let msg = '';
+
+                if (isNaN(value)) {
+                    msg = `<span class="text-red-600 font-bold">Please enter a valid number for the value.</span>`;
+                } else if (value < -1 || value > 1) {
+                    msg = `<span class="text-red-600 font-bold">For sin<sup>-1</sup>, the input value must be between -1 and 1.</span>`;
+                } else {
+                    let resultRad = Math.asin(value);
+                    let result = toDegrees(resultRad, unit);
+                    msg = `sin<sup>-1</sup>(${value}) = <span class="font-bold">${rT(result)} ${unit}</span>`;
+                }
+                iTO.innerHTML = msg;
+                iTO.classList.remove('hidden');
+            });
+
+            cACOS.addEventListener('click', () => {
+                clearInverseTrigResults();
+                const value = parseFloat(iTV.value);
+                const unit = iTU.value;
+                let msg = '';
+
+                if (isNaN(value)) {
+                    msg = `<span class="text-red-600 font-bold">Please enter a valid number for the value.</span>`;
+                } else if (value < -1 || value > 1) {
+                    msg = `<span class="text-red-600 font-bold">For cos<sup>-1</sup>, the input value must be between -1 and 1.</span>`;
+                } else {
+                    let resultRad = Math.acos(value);
+                    let result = toDegrees(resultRad, unit);
+                    msg = `cos<sup>-1</sup>(${value}) = <span class="font-bold">${rT(result)} ${unit}</span>`;
+                }
+                iTO.innerHTML = msg;
+                iTO.classList.remove('hidden');
+            });
+
+            cATAN.addEventListener('click', () => {
+                clearInverseTrigResults();
+                const value = parseFloat(iTV.value);
+                const unit = iTU.value;
+                let msg = '';
+
+                if (isNaN(value)) {
+                    msg = `<span class="text-red-600 font-bold">Please enter a valid number for the value.</span>`;
+                } else {
+                    let resultRad = Math.atan(value);
+                    let result = toDegrees(resultRad, unit);
+                    msg = `tan<sup>-1</sup>(${value}) = <span class="font-bold">${rT(result)} ${unit}</span>`;
+                }
+                iTO.innerHTML = msg;
+                iTO.classList.remove('hidden');
             });
         });
     </script>
