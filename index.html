@@ -60,6 +60,55 @@
         <p class="text-center text-gray-600 text-sm mt-8">
             ------ THANKS FOR USING THE XY QUADRATIC EQUATION SOLVER! ------
         </p>
+
+        <!-- New Section for Cosine Rule Calculator -->
+        <hr class="my-8 border-gray-300">
+        <h2 class="text-2xl font-extrabold text-center text-gray-800 mb-6">
+            Cosine Rule Calculator
+        </h2>
+
+        <div class="space-y-4">
+            <div>
+                <label for="side-a" class="block text-sm font-medium text-gray-700 mb-1">
+                    Side 'a':
+                </label>
+                <input type="number" id="side-a" placeholder="Enter length of side a"
+                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+            </div>
+            <div>
+                <label for="side-b" class="block text-sm font-medium text-gray-700 mb-1">
+                    Side 'b':
+                </label>
+                <input type="number" id="side-b" placeholder="Enter length of side b"
+                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+            </div>
+            <div>
+                <label for="angle-c" class="block text-sm font-medium text-gray-700 mb-1">
+                    Angle 'C' (between a and b):
+                </label>
+                <input type="number" id="angle-c" placeholder="Enter angle C"
+                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+            </div>
+            <div>
+                <label for="angle-unit" class="block text-sm font-medium text-gray-700 mb-1">
+                    Angle Unit:
+                </label>
+                <select id="angle-unit"
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+                    <option value="degrees">Degrees</option>
+                    <option value="radians">Radians</option>
+                </select>
+            </div>
+        </div>
+
+        <button id="calculate-cosine-button"
+                class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transform transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+            Calculate Side 'c'
+        </button>
+
+        <div id="cosine-results" class="space-y-4 text-gray-800 text-base">
+            <p id="cosine-output" class="bg-gray-100 p-3 rounded-md hidden"></p>
+        </div>
     </div>
 
     <script>
@@ -179,6 +228,55 @@
                 const hRR = cD(a, b, c);
                 fS(a, b, c);
                 cV(a, b, c, hRR);
+            });
+
+            // Cosine Rule Calculator Logic
+            const sideAInput = document.getElementById('side-a');
+            const sideBInput = document.getElementById('side-b');
+            const angleCInput = document.getElementById('angle-c');
+            const angleUnitSelect = document.getElementById('angle-unit');
+            const calculateCosineButton = document.getElementById('calculate-cosine-button');
+            const cosineOutput = document.getElementById('cosine-output');
+
+            function clearCosineResults() {
+                cosineOutput.innerHTML = '';
+                cosineOutput.classList.add('hidden');
+            }
+
+            calculateCosineButton.addEventListener('click', () => {
+                clearCosineResults();
+
+                const a = parseFloat(sideAInput.value);
+                const b = parseFloat(sideBInput.value);
+                let C = parseFloat(angleCInput.value); // Angle in degrees or radians
+                const unit = angleUnitSelect.value;
+
+                if (isNaN(a) || isNaN(b) || isNaN(C)) {
+                    cosineOutput.innerHTML = `<span class="text-red-600 font-bold">Please enter valid numbers for sides 'a', 'b' and angle 'C'.</span>`;
+                    cosineOutput.classList.remove('hidden');
+                    return;
+                }
+
+                if (a <= 0 || b <= 0) {
+                    cosineOutput.innerHTML = `<span class="text-red-600 font-bold">Sides 'a' and 'b' must be positive values.</span>`;
+                    cosineOutput.classList.remove('hidden');
+                    return;
+                }
+
+                // Convert angle to radians if unit is degrees
+                if (unit === 'degrees') {
+                    C = C * Math.PI / 180;
+                }
+
+                const cSquared = a * a + b * b - 2 * a * b * Math.cos(C);
+
+                if (cSquared < 0) {
+                    cosineOutput.innerHTML = `<span class="text-red-600 font-bold">Invalid input: Calculation resulted in a negative value under the square root.</span>`;
+                } else {
+                    const c = Math.sqrt(cSquared);
+                    cosineOutput.innerHTML = `The length of side 'c' is: <span class="font-bold">${c.toFixed(4)}</span>`;
+                }
+                cosineOutput.classList.remove('hidden');
             });
         });
     </script>
