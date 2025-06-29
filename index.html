@@ -9,9 +9,12 @@
         body {
             font-family: "Inter", sans-serif;
         }
-        input:focus {
+        input:focus, select:focus {
             outline: none;
             box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+        }
+        .input-field {
+            @apply mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all duration-200;
         }
     </style>
 </head>
@@ -19,8 +22,31 @@
 
     <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg space-y-6 transform transition-all duration-300 hover:scale-[1.01]">
         <h1 class="text-3xl font-extrabold text-center text-gray-800 mb-6">
-            <span class="text-blue-600">XY</span> Quadratic Equation Solver
+            <span class="text-blue-600">XY</span> Equation Solver
         </h1>
+
+        <!-- Global Rounding Selector -->
+        <div class="mb-6">
+            <label for="decimal-places" class="block text-sm font-medium text-gray-700 mb-1">
+                Round Results to Decimal Places:
+            </label>
+            <select id="decimal-places" class="input-field">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4" selected>4 (Default)</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+            </select>
+        </div>
+
+        <hr class="my-8 border-gray-300">
+        <h2 class="text-2xl font-extrabold text-center text-gray-800 mb-6">
+            Quadratic Equation Solver
+        </h2>
 
         <div class="space-y-4">
             <div>
@@ -28,21 +54,21 @@
                     Coefficient a:
                 </label>
                 <input type="number" id="a-coeff" placeholder="Enter value for a (e.g., 1)"
-                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+                       class="input-field">
             </div>
             <div>
                 <label for="b-coeff" class="block text-sm font-medium text-gray-700 mb-1">
                     Coefficient b:
                 </label>
                 <input type="number" id="b-coeff" placeholder="Enter value for b (e.g., -3)"
-                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+                       class="input-field">
             </div>
             <div>
                 <label for="c-coeff" class="block text-sm font-medium text-gray-700 mb-1">
                     Coefficient c:
                 </label>
                 <input type="number" id="c-coeff" placeholder="Enter value for c (e.g., 2)"
-                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+                       class="input-field">
             </div>
         </div>
 
@@ -57,11 +83,8 @@
             <div id="vieta-output" class="bg-gray-100 p-3 rounded-md hidden space-y-2"></div>
         </div>
 
-        <p class="text-center text-gray-600 text-sm mt-8">
-            ------ THANKS FOR USING THE XY QUADRATIC EQUATION SOLVER! ------
-        </p>
 
-        <!-- New Section for Cosine Rule Calculator -->
+        <!-- Cosine Rule Calculator -->
         <hr class="my-8 border-gray-300">
         <h2 class="text-2xl font-extrabold text-center text-gray-800 mb-6">
             Cosine Rule Calculator
@@ -69,32 +92,82 @@
 
         <div class="space-y-4">
             <div>
-                <label for="side-a" class="block text-sm font-medium text-gray-700 mb-1">
-                    Side 'a':
+                <label for="cosine-calc-type" class="block text-sm font-medium text-gray-700 mb-1">
+                    Calculate:
                 </label>
-                <input type="number" id="side-a" placeholder="Enter length of side a"
-                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+                <select id="cosine-calc-type" class="input-field">
+                    <option value="side-c">Side 'c' (given a, b, C)</option>
+                    <option value="angle-c">Angle 'C' (given a, b, c)</option>
+                    <option value="side-a">Side 'a' (given b, c, A)</option>
+                    <option value="side-b">Side 'b' (given a, c, B)</option>
+                </select>
             </div>
-            <div>
-                <label for="side-b" class="block text-sm font-medium text-gray-700 mb-1">
-                    Side 'b':
-                </label>
-                <input type="number" id="side-b" placeholder="Enter length of side b"
-                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+
+            <div id="cosine-inputs-side-c" class="space-y-4">
+                <div>
+                    <label for="side-a-cos" class="block text-sm font-medium text-gray-700 mb-1">Side 'a':</label>
+                    <input type="number" id="side-a-cos" placeholder="Enter length of side a" class="input-field">
+                </div>
+                <div>
+                    <label for="side-b-cos" class="block text-sm font-medium text-gray-700 mb-1">Side 'b':</label>
+                    <input type="number" id="side-b-cos" placeholder="Enter length of side b" class="input-field">
+                </div>
+                <div>
+                    <label for="angle-c-cos" class="block text-sm font-medium text-gray-700 mb-1">Angle 'C' (between a and b):</label>
+                    <input type="number" id="angle-c-cos" placeholder="Enter angle C" class="input-field">
+                </div>
             </div>
-            <div>
-                <label for="angle-c" class="block text-sm font-medium text-gray-700 mb-1">
-                    Angle 'C' (between a and b):
-                </label>
-                <input type="number" id="angle-c" placeholder="Enter angle C"
-                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+
+            <div id="cosine-inputs-angle-c" class="space-y-4 hidden">
+                <div>
+                    <label for="side-a-angle-cos" class="block text-sm font-medium text-gray-700 mb-1">Side 'a':</label>
+                    <input type="number" id="side-a-angle-cos" placeholder="Enter length of side a" class="input-field">
+                </div>
+                <div>
+                    <label for="side-b-angle-cos" class="block text-sm font-medium text-gray-700 mb-1">Side 'b':</label>
+                    <input type="number" id="side-b-angle-cos" placeholder="Enter length of side b" class="input-field">
+                </div>
+                <div>
+                    <label for="side-c-angle-cos" class="block text-sm font-medium text-gray-700 mb-1">Side 'c':</label>
+                    <input type="number" id="side-c-angle-cos" placeholder="Enter length of side c" class="input-field">
+                </div>
             </div>
+
+            <div id="cosine-inputs-side-a" class="space-y-4 hidden">
+                <div>
+                    <label for="side-b-side-a-cos" class="block text-sm font-medium text-gray-700 mb-1">Side 'b':</label>
+                    <input type="number" id="side-b-side-a-cos" placeholder="Enter length of side b" class="input-field">
+                </div>
+                <div>
+                    <label for="side-c-side-a-cos" class="block text-sm font-medium text-gray-700 mb-1">Side 'c':</label>
+                    <input type="number" id="side-c-side-a-cos" placeholder="Enter length of side c" class="input-field">
+                </div>
+                <div>
+                    <label for="angle-a-cos" class="block text-sm font-medium text-gray-700 mb-1">Angle 'A' (between b and c):</label>
+                    <input type="number" id="angle-a-cos" placeholder="Enter angle A" class="input-field">
+                </div>
+            </div>
+
+            <div id="cosine-inputs-side-b" class="space-y-4 hidden">
+                <div>
+                    <label for="side-a-side-b-cos" class="block text-sm font-medium text-gray-700 mb-1">Side 'a':</label>
+                    <input type="number" id="side-a-side-b-cos" placeholder="Enter length of side a" class="input-field">
+                </div>
+                <div>
+                    <label for="side-c-side-b-cos" class="block text-sm font-medium text-gray-700 mb-1">Side 'c':</label>
+                    <input type="number" id="side-c-side-b-cos" placeholder="Enter length of side c" class="input-field">
+                </div>
+                <div>
+                    <label for="angle-b-cos" class="block text-sm font-medium text-gray-700 mb-1">Angle 'B' (between a and c):</label>
+                    <input type="number" id="angle-b-cos" placeholder="Enter angle B" class="input-field">
+                </div>
+            </div>
+
             <div>
-                <label for="angle-unit" class="block text-sm font-medium text-gray-700 mb-1">
+                <label for="cosine-angle-unit" class="block text-sm font-medium text-gray-700 mb-1">
                     Angle Unit:
                 </label>
-                <select id="angle-unit"
-                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+                <select id="cosine-angle-unit" class="input-field">
                     <option value="degrees">Degrees</option>
                     <option value="radians">Radians</option>
                 </select>
@@ -103,12 +176,80 @@
 
         <button id="calculate-cosine-button"
                 class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transform transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-            Calculate Side 'c'
+            Calculate Cosine Rule
         </button>
 
         <div id="cosine-results" class="space-y-4 text-gray-800 text-base">
             <p id="cosine-output" class="bg-gray-100 p-3 rounded-md hidden"></p>
         </div>
+
+        <!-- Sine Rule Calculator -->
+        <hr class="my-8 border-gray-300">
+        <h2 class="text-2xl font-extrabold text-center text-gray-800 mb-6">
+            Sine Rule Calculator
+        </h2>
+
+        <div class="space-y-4">
+            <div>
+                <label for="sine-calc-type" class="block text-sm font-medium text-gray-700 mb-1">
+                    Calculate:
+                </label>
+                <select id="sine-calc-type" class="input-field">
+                    <option value="side">Missing Side</option>
+                    <option value="angle">Missing Angle</option>
+                </select>
+            </div>
+            <div id="sine-inputs-side" class="space-y-4">
+                <div>
+                    <label for="sine-side-known" class="block text-sm font-medium text-gray-700 mb-1">Known Side:</label>
+                    <input type="number" id="sine-side-known" placeholder="e.g., side 'a'" class="input-field">
+                </div>
+                <div>
+                    <label for="sine-angle-known" class="block text-sm font-medium text-gray-700 mb-1">Known Angle (opposite Known Side):</label>
+                    <input type="number" id="sine-angle-known" placeholder="e.g., angle 'A'" class="input-field">
+                </div>
+                <div>
+                    <label for="sine-angle-unknown" class="block text-sm font-medium text-gray-700 mb-1">Angle (opposite Missing Side):</label>
+                    <input type="number" id="sine-angle-unknown" placeholder="e.g., angle 'B'" class="input-field">
+                </div>
+            </div>
+            <div id="sine-inputs-angle" class="space-y-4 hidden">
+                <div>
+                    <label for="sine-side-1-angle" class="block text-sm font-medium text-gray-700 mb-1">Side 1:</label>
+                    <input type="number" id="sine-side-1-angle" placeholder="e.g., side 'a'" class="input-field">
+                </div>
+                <div>
+                    <label for="sine-angle-1-angle" class="block text-sm font-medium text-gray-700 mb-1">Angle 1 (opposite Side 1):</label>
+                    <input type="number" id="sine-angle-1-angle" placeholder="e.g., angle 'A'" class="input-field">
+                </div>
+                <div>
+                    <label for="sine-side-2-angle" class="block text-sm font-medium text-gray-700 mb-1">Side 2 (opposite Missing Angle):</label>
+                    <input type="number" id="sine-side-2-angle" placeholder="e.g., side 'b'" class="input-field">
+                </div>
+            </div>
+            <div>
+                <label for="sine-angle-unit" class="block text-sm font-medium text-gray-700 mb-1">
+                    Angle Unit:
+                </label>
+                <select id="sine-angle-unit" class="input-field">
+                    <option value="degrees">Degrees</option>
+                    <option value="radians">Radians</option>
+                </select>
+            </div>
+        </div>
+
+        <button id="calculate-sine-button"
+                class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transform transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
+            Calculate Sine Rule
+        </button>
+
+        <div id="sine-results" class="space-y-4 text-gray-800 text-base">
+            <p id="sine-output" class="bg-gray-100 p-3 rounded-md hidden"></p>
+        </div>
+
+        <p class="text-center text-gray-600 text-sm mt-8">
+            ------ THANKS FOR USING THE XY EQUATION SOLVER! ------
+        </p>
     </div>
 
     <script>
@@ -121,6 +262,67 @@
             const dO = document.getElementById('discriminant-output');
             const rO = document.getElementById('roots-output');
             const vO = document.getElementById('vieta-output');
+            const dpS = document.getElementById('decimal-places');
+
+            // Cosine Rule elements
+            const cCT = document.getElementById('cosine-calc-type');
+            const cISc = document.getElementById('cosine-inputs-side-c');
+            const cIAc = document.getElementById('cosine-inputs-angle-c');
+            const cISa = document.getElementById('cosine-inputs-side-a');
+            const cISb = document.getElementById('cosine-inputs-side-b');
+
+            const sAc = document.getElementById('side-a-cos');
+            const sBc = document.getElementById('side-b-cos');
+            const aCc = document.getElementById('angle-c-cos');
+
+            const sAAc = document.getElementById('side-a-angle-cos');
+            const sBAc = document.getElementById('side-b-angle-cos');
+            const sCAc = document.getElementById('side-c-angle-cos');
+
+            const sBSa = document.getElementById('side-b-side-a-cos');
+            const sCSa = document.getElementById('side-c-side-a-cos');
+            const aASa = document.getElementById('angle-a-cos');
+
+            const sASb = document.getElementById('side-a-side-b-cos');
+            const sCSb = document.getElementById('side-c-side-b-cos');
+            const aBSb = document.getElementById('angle-b-cos');
+
+
+            const cAU = document.getElementById('cosine-angle-unit');
+            const cCB = document.getElementById('calculate-cosine-button');
+            const cO = document.getElementById('cosine-output');
+
+            // Sine Rule elements
+            const sCT = document.getElementById('sine-calc-type');
+            const sIS = document.getElementById('sine-inputs-side');
+            const sIA = document.getElementById('sine-inputs-angle');
+
+            const sSK = document.getElementById('sine-side-known');
+            const sAK = document.getElementById('sine-angle-known');
+            const sAU = document.getElementById('sine-angle-unknown');
+
+            const s1A = document.getElementById('sine-side-1-angle');
+            const a1A = document.getElementById('sine-angle-1-angle');
+            const s2A = document.getElementById('sine-side-2-angle');
+
+            const sAU_sine = document.getElementById('sine-angle-unit');
+            const cSiB = document.getElementById('calculate-sine-button');
+            const sO = document.getElementById('sine-output');
+
+
+            function rT(v) {
+                const dp = parseInt(dpS.value);
+                if (isNaN(v)) return 'Invalid Number';
+                return v.toFixed(dp);
+            }
+
+            function toRadians(angle, unit) {
+                return unit === 'degrees' ? angle * Math.PI / 180 : angle;
+            }
+
+            function toDegrees(angle, unit) {
+                return unit === 'radians' ? angle * 180 / Math.PI : angle;
+            }
 
             function cR() {
                 dO.innerHTML = '';
@@ -137,12 +339,12 @@
                 let msg = '';
 
                 if (t > 0) {
-                    msg = `There are 2 real roots since the discriminant b<sup>2</sup> - 4ac is ${t.toFixed(4)}.`;
+                    msg = `There are 2 real roots since the discriminant b<sup>2</sup> - 4ac is ${rT(t)}.`;
                     iV = true;
                 } else if (t < 0) {
-                    msg = `There are 2 imaginary roots since the discriminant b<sup>2</sup> - 4ac is ${t.toFixed(4)}.`;
+                    msg = `There are 2 imaginary roots since the discriminant b<sup>2</sup> - 4ac is ${rT(t)}.`;
                 } else {
-                    msg = `There is 1 real root since the discriminant b<sup>2</sup> - 4ac is ${t.toFixed(4)}.`;
+                    msg = `There is 1 real root since the discriminant b<sup>2</sup> - 4ac is ${rT(t)}.`;
                     iV = true;
                 }
                 dO.innerHTML = msg;
@@ -156,15 +358,15 @@
                     const s = -1 * y / x;
                     const m = z / x;
 
-                    hC += `<p>The roots of the equation multiply to ${m.toFixed(4)} and the sum is ${s.toFixed(4)}.</p>`;
-                    hC += `<p>x<sub>1</sub><sup>2</sup> + x<sub>2</sub><sup>2</sup> = ${(s * s - 2 * m).toFixed(4)}</p>`;
+                    hC += `<p>The roots of the equation multiply to ${rT(m)} and the sum is ${rT(s)}.</p>`;
+                    hC += `<p>x<sub>1</sub><sup>2</sup> + x<sub>2</sub><sup>2</sup> = ${rT(s * s - 2 * m)}</p>`;
 
                     let rsD;
                     if (m !== 0) {
                         const rs = s / m;
-                        rsD = `1/x<sub>1</sub> + 1/x<sub>2</sub> = ${rs.toFixed(4)}`;
+                        rsD = `1/x<sub>1</sub> + 1/x<sub>2</sub> = ${rT(rs)}`;
                         if (s <= 0 && m <= 0 && s !== 0 && m !== 0) {
-                            rsD += ` or ${Math.abs(s).toFixed(4)}/${Math.abs(m).toFixed(4)}`;
+                            rsD += ` or ${rT(Math.abs(s))}/${rT(Math.abs(m))}`;
                         }
                     } else {
                         rsD = `1/x<sub>1</sub> + 1/x<sub>2</sub> = Undefined (division by zero)`;
@@ -172,10 +374,10 @@
                     hC += `<p>${rsD}</p>`;
 
                     const x3s = (s * s - 2 * m) * s - (m * s);
-                    hC += `<p>x<sub>1</sub><sup>3</sup> + x<sub>2</sub><sup>3</sup> = ${x3s.toFixed(4)}</p>`;
+                    hC += `<p>x<sub>1</sub><sup>3</sup> + x<sub>2</sub><sup>3</sup> = ${rT(x3s)}</p>`;
 
                     const x4s = (x3s) * s - m * (s * s - 2 * m);
-                    hC += `<p>x<sub>1</sub><sup>4</sup> + x<sub>2</sub><sup>4</sup> = ${x4s.toFixed(4)}</p>`;
+                    hC += `<p>x<sub>1</sub><sup>4</sup> + x<sub>2</sub><sup>4</sup> = ${rT(x4s)}</p>`;
 
                     vO.innerHTML = hC;
                     vO.classList.remove('hidden');
@@ -190,17 +392,17 @@
                     const x1 = (-y + Math.sqrt(dis)) / (2 * x);
                     const x2 = (-y - Math.sqrt(dis)) / (2 * x);
 
-                    if (x1.toFixed(4) !== x2.toFixed(4)) {
-                        msg = `The two real roots are x<sub>1</sub> = ${x1.toFixed(4)} and x<sub>2</sub> = ${x2.toFixed(4)}.`;
+                    if (rT(x1) !== rT(x2)) {
+                        msg = `The two real roots are x<sub>1</sub> = ${rT(x1)} and x<sub>2</sub> = ${rT(x2)}.`;
                     } else {
-                        msg = `The real root is x<sub>1</sub> = ${x1.toFixed(4)}.`;
+                        msg = `The real root is x<sub>1</sub> = ${rT(x1)}.`;
                     }
-                    msg += `<br>Quadratic formula: ( ${-1 * y} &plusmn; &radic;${dis.toFixed(4)}) / ${2 * x}`;
+                    msg += `<br>Quadratic formula: ( ${-1 * y} &plusmn; &radic;${rT(dis)}) / ${2 * x}`;
                 } else {
-                    const rP = (-y / (2 * x)).toFixed(4);
-                    const iP = (Math.sqrt(Math.abs(dis)) / (2 * x)).toFixed(4);
+                    const rP = rT(-y / (2 * x));
+                    const iP = rT(Math.sqrt(Math.abs(dis)) / (2 * x));
                     msg = `The two imaginary roots are x<sub>1</sub> = ${rP} + ${iP}i and x<sub>2</sub> = ${rP} - ${iP}i.`;
-                    msg += `<br>Quadratic formula: ( ${-1 * y} &plusmn; &radic;${dis.toFixed(4)}) / ${2 * x}`;
+                    msg += `<br>Quadratic formula: ( ${-1 * y} &plusmn; &radic;${rT(dis)}) / ${2 * x}`;
                 }
                 rO.innerHTML = msg;
                 rO.classList.remove('hidden');
@@ -231,52 +433,226 @@
             });
 
             // Cosine Rule Calculator Logic
-            const sideAInput = document.getElementById('side-a');
-            const sideBInput = document.getElementById('side-b');
-            const angleCInput = document.getElementById('angle-c');
-            const angleUnitSelect = document.getElementById('angle-unit');
-            const calculateCosineButton = document.getElementById('calculate-cosine-button');
-            const cosineOutput = document.getElementById('cosine-output');
-
             function clearCosineResults() {
-                cosineOutput.innerHTML = '';
-                cosineOutput.classList.add('hidden');
+                cO.innerHTML = '';
+                cO.classList.add('hidden');
             }
 
-            calculateCosineButton.addEventListener('click', () => {
+            // Function to update visibility of Cosine Rule input fields
+            function updateCosineInputs() {
+                cISc.classList.add('hidden');
+                cIAc.classList.add('hidden');
+                cISa.classList.add('hidden');
+                cISb.classList.add('hidden');
+
+                const selectedType = cCT.value;
+                if (selectedType === 'side-c') {
+                    cISc.classList.remove('hidden');
+                } else if (selectedType === 'angle-c') {
+                    cIAc.classList.remove('hidden');
+                } else if (selectedType === 'side-a') {
+                    cISa.classList.remove('hidden');
+                } else if (selectedType === 'side-b') {
+                    cISb.classList.remove('hidden');
+                }
+            }
+
+            cCT.addEventListener('change', updateCosineInputs);
+            updateCosineInputs(); // Initialize on load
+
+            cCB.addEventListener('click', () => {
                 clearCosineResults();
+                const unit = cAU.value;
+                const calcType = cCT.value;
+                let msg = '';
+                let isValid = true;
 
-                const a = parseFloat(sideAInput.value);
-                const b = parseFloat(sideBInput.value);
-                let C = parseFloat(angleCInput.value); // Angle in degrees or radians
-                const unit = angleUnitSelect.value;
+                if (calcType === 'side-c') {
+                    const a = parseFloat(sAc.value);
+                    const b = parseFloat(sBc.value);
+                    let C = parseFloat(aCc.value);
 
-                if (isNaN(a) || isNaN(b) || isNaN(C)) {
-                    cosineOutput.innerHTML = `<span class="text-red-600 font-bold">Please enter valid numbers for sides 'a', 'b' and angle 'C'.</span>`;
-                    cosineOutput.classList.remove('hidden');
-                    return;
+                    if (isNaN(a) || isNaN(b) || isNaN(C)) {
+                        msg = `<span class="text-red-600 font-bold">Please enter valid numbers for sides 'a', 'b' and angle 'C'.</span>`;
+                        isValid = false;
+                    } else if (a <= 0 || b <= 0) {
+                        msg = `<span class="text-red-600 font-bold">Sides 'a' and 'b' must be positive values.</span>`;
+                        isValid = false;
+                    } else {
+                        C = toRadians(C, unit);
+                        const cSquared = a * a + b * b - 2 * a * b * Math.cos(C);
+                        if (cSquared < 0) {
+                            msg = `<span class="text-red-600 font-bold">Invalid input: Calculation resulted in a negative value under the square root. Check angle C validity.</span>`;
+                            isValid = false;
+                        } else {
+                            const c = Math.sqrt(cSquared);
+                            msg = `The length of side 'c' is: <span class="font-bold">${rT(c)}</span>`;
+                        }
+                    }
+                } else if (calcType === 'angle-c') {
+                    const a = parseFloat(sAAc.value);
+                    const b = parseFloat(sBAc.value);
+                    const c = parseFloat(sCAc.value);
+
+                    if (isNaN(a) || isNaN(b) || isNaN(c)) {
+                        msg = `<span class="text-red-600 font-bold">Please enter valid numbers for sides 'a', 'b', and 'c'.</span>`;
+                        isValid = false;
+                    } else if (a <= 0 || b <= 0 || c <= 0) {
+                        msg = `<span class="text-red-600 font-bold">All sides must be positive values.</span>`;
+                        isValid = false;
+                    } else if (a + b <= c || a + c <= b || b + c <= a) {
+                         msg = `<span class="text-red-600 font-bold">Invalid triangle: Sum of two sides must be greater than the third side.</span>`;
+                         isValid = false;
+                    }
+                    else {
+                        const cosC = (a * a + b * b - c * c) / (2 * a * b);
+                        if (cosC > 1 || cosC < -1) {
+                            msg = `<span class="text-red-600 font-bold">Invalid triangle: Cosine value out of range [-1, 1]. Check side lengths.</span>`;
+                            isValid = false;
+                        } else {
+                            let C_rad = Math.acos(cosC);
+                            let C_val = toDegrees(C_rad, unit);
+                            msg = `The angle 'C' is: <span class="font-bold">${rT(C_val)} ${unit}</span>`;
+                        }
+                    }
+                } else if (calcType === 'side-a') {
+                    const b = parseFloat(sBSa.value);
+                    const c = parseFloat(sCSa.value);
+                    let A = parseFloat(aASa.value);
+
+                    if (isNaN(b) || isNaN(c) || isNaN(A)) {
+                        msg = `<span class="text-red-600 font-bold">Please enter valid numbers for sides 'b', 'c' and angle 'A'.</span>`;
+                        isValid = false;
+                    } else if (b <= 0 || c <= 0) {
+                        msg = `<span class="text-red-600 font-bold">Sides 'b' and 'c' must be positive values.</span>`;
+                        isValid = false;
+                    } else {
+                        A = toRadians(A, unit);
+                        const aSquared = b * b + c * c - 2 * b * c * Math.cos(A);
+                        if (aSquared < 0) {
+                            msg = `<span class="text-red-600 font-bold">Invalid input: Calculation resulted in a negative value under the square root. Check angle A validity.</span>`;
+                            isValid = false;
+                        } else {
+                            const a = Math.sqrt(aSquared);
+                            msg = `The length of side 'a' is: <span class="font-bold">${rT(a)}</span>`;
+                        }
+                    }
+                } else if (calcType === 'side-b') {
+                    const a = parseFloat(sASb.value);
+                    const c = parseFloat(sCSb.value);
+                    let B = parseFloat(aBSb.value);
+
+                    if (isNaN(a) || isNaN(c) || isNaN(B)) {
+                        msg = `<span class="text-red-600 font-bold">Please enter valid numbers for sides 'a', 'c' and angle 'B'.</span>`;
+                        isValid = false;
+                    } else if (a <= 0 || c <= 0) {
+                        msg = `<span class="text-red-600 font-bold">Sides 'a' and 'c' must be positive values.</span>`;
+                        isValid = false;
+                    } else {
+                        B = toRadians(B, unit);
+                        const bSquared = a * a + c * c - 2 * a * c * Math.cos(B);
+                        if (bSquared < 0) {
+                            msg = `<span class="text-red-600 font-bold">Invalid input: Calculation resulted in a negative value under the square root. Check angle B validity.</span>`;
+                            isValid = false;
+                        } else {
+                            const b = Math.sqrt(bSquared);
+                            msg = `The length of side 'b' is: <span class="font-bold">${rT(b)}</span>`;
+                        }
+                    }
                 }
 
-                if (a <= 0 || b <= 0) {
-                    cosineOutput.innerHTML = `<span class="text-red-600 font-bold">Sides 'a' and 'b' must be positive values.</span>`;
-                    cosineOutput.classList.remove('hidden');
-                    return;
+                cO.innerHTML = msg;
+                cO.classList.remove('hidden');
+            });
+
+            // Sine Rule Calculator Logic
+            function clearSineResults() {
+                sO.innerHTML = '';
+                sO.classList.add('hidden');
+            }
+
+            function updateSineInputs() {
+                sIS.classList.add('hidden');
+                sIA.classList.add('hidden');
+
+                const selectedType = sCT.value;
+                if (selectedType === 'side') {
+                    sIS.classList.remove('hidden');
+                } else if (selectedType === 'angle') {
+                    sIA.classList.remove('hidden');
+                }
+            }
+
+            sCT.addEventListener('change', updateSineInputs);
+            updateSineInputs(); // Initialize on load
+
+            cSiB.addEventListener('click', () => {
+                clearSineResults();
+                const unit = sAU_sine.value;
+                const calcType = sCT.value;
+                let msg = '';
+                let isValid = true;
+
+                if (calcType === 'side') {
+                    const sK = parseFloat(sSK.value); // Known Side
+                    let aK = parseFloat(sAK.value); // Known Angle (opposite sK)
+                    let aU = parseFloat(sAU.value); // Angle (opposite Unknown Side)
+
+                    if (isNaN(sK) || isNaN(aK) || isNaN(aU)) {
+                        msg = `<span class="text-red-600 font-bold">Please enter valid numbers for Known Side, Known Angle, and Angle (opposite Missing Side).</span>`;
+                        isValid = false;
+                    } else if (sK <= 0) {
+                        msg = `<span class="text-red-600 font-bold">Known Side must be a positive value.</span>`;
+                        isValid = false;
+                    } else {
+                        aK = toRadians(aK, unit);
+                        aU = toRadians(aU, unit);
+
+                        if (Math.sin(aK) === 0) {
+                            msg = `<span class="text-red-600 font-bold">Known Angle's sine is zero. Cannot divide by zero.</span>`;
+                            isValid = false;
+                        } else if (aU < 0 || aU > Math.PI) { // Angles in a triangle must be between 0 and 180 degrees (0 and PI radians)
+                            msg = `<span class="text-red-600 font-bold">Invalid Angle (opposite Missing Side). Must be between 0 and ${unit === 'degrees' ? '180' : 'π'} ${unit}.</span>`;
+                            isValid = false;
+                        }
+                        else {
+                            const unknownSide = (sK * Math.sin(aU)) / Math.sin(aK);
+                            msg = `The missing side is: <span class="font-bold">${rT(unknownSide)}</span>`;
+                        }
+                    }
+                } else if (calcType === 'angle') {
+                    const s1 = parseFloat(s1A.value); // Side 1
+                    let a1 = parseFloat(a1A.value); // Angle 1 (opposite Side 1)
+                    const s2 = parseFloat(s2A.value); // Side 2 (opposite Missing Angle)
+
+                    if (isNaN(s1) || isNaN(a1) || isNaN(s2)) {
+                        msg = `<span class="text-red-600 font-bold">Please enter valid numbers for Side 1, Angle 1, and Side 2.</span>`;
+                        isValid = false;
+                    } else if (s1 <= 0 || s2 <= 0) {
+                        msg = `<span class="text-red-600 font-bold">Sides must be positive values.</span>`;
+                        isValid = false;
+                    } else {
+                        a1 = toRadians(a1, unit);
+                        if (Math.sin(a1) === 0) {
+                            msg = `<span class="text-red-600 font-bold">Angle 1's sine is zero. Cannot divide by zero.</span>`;
+                            isValid = false;
+                        } else {
+                            const sinUnknownAngle = (s2 * Math.sin(a1)) / s1;
+                            if (sinUnknownAngle > 1 || sinUnknownAngle < -1) {
+                                msg = `<span class="text-red-600 font-bold">Invalid input: Sine value out of range [-1, 1]. Check side lengths and angle.</span>`;
+                                isValid = false;
+                            } else {
+                                const unknownAngleRad = Math.asin(sinUnknownAngle);
+                                const unknownAngleVal = toDegrees(unknownAngleRad, unit);
+                                msg = `The missing angle is: <span class="font-bold">${rT(unknownAngleVal)} ${unit}</span>`;
+                                // Consider ambiguous case if needed, but for simplicity, only the principal value is returned by Math.asin
+                            }
+                        }
+                    }
                 }
 
-                // Convert angle to radians if unit is degrees
-                if (unit === 'degrees') {
-                    C = C * Math.PI / 180;
-                }
-
-                const cSquared = a * a + b * b - 2 * a * b * Math.cos(C);
-
-                if (cSquared < 0) {
-                    cosineOutput.innerHTML = `<span class="text-red-600 font-bold">Invalid input: Calculation resulted in a negative value under the square root.</span>`;
-                } else {
-                    const c = Math.sqrt(cSquared);
-                    cosineOutput.innerHTML = `The length of side 'c' is: <span class="font-bold">${c.toFixed(4)}</span>`;
-                }
-                cosineOutput.classList.remove('hidden');
+                sO.innerHTML = msg;
+                sO.classList.remove('hidden');
             });
         });
     </script>
